@@ -8,7 +8,7 @@ import requests
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
-from api_client import APIClient  # noqa: E402
+from api_client import APIClient
 
 
 class FakeResponse:

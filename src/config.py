@@ -1,14 +1,15 @@
 """Runtime configuration loaded from environment variables."""
 
+from __future__ import annotations
+
 import os
 from dataclasses import dataclass
-from typing import Optional
 
 
 @dataclass(frozen=True)
 class APISettings:
     base_url: str
-    token: Optional[str] = None
+    token: str | None = None
     timeout: int = 10
 
     @classmethod

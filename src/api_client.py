@@ -1,6 +1,8 @@
 """Small, testable HTTP client for JSON APIs."""
 
-from typing import Any, Optional
+from __future__ import annotations
+
+from typing import Any
 
 import requests
 from config import APISettings
@@ -13,9 +15,9 @@ class APIClient:
 
     def __init__(
         self,
-        base_url: Optional[str] = None,
-        session: Optional[requests.Session] = None,
-        timeout: Optional[int] = None,
+        base_url: str | None = None,
+        session: requests.Session | None = None,
+        timeout: int | None = None,
     ) -> None:
         settings = APISettings.from_environment()
         self.base_url = (base_url or settings.base_url).rstrip("/")
