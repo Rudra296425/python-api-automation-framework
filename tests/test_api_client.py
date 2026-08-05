@@ -29,8 +29,8 @@ class FakeSession:
         self.response = response
         self.calls = []
 
-    def get(self, url, timeout):
-        self.calls.append((url, timeout))
+    def request(self, method, url, timeout, **kwargs):
+        self.calls.append((method, url, timeout, kwargs))
         return self.response
 
 
@@ -39,7 +39,7 @@ def test_get_user_returns_json_and_uses_configured_timeout():
     client = APIClient("https://api.example.test/", session=session, timeout=3)
 
     assert client.get_user(7) == {"id": 7, "name": "Ada"}
-    assert session.calls == [("https://api.example.test/users/7", 3)]
+    assert session.calls == [("GET", "https://api.example.test/users/7", 3, {})]
 
 
 def test_get_user_propagates_http_errors():
@@ -48,3 +48,14 @@ def test_get_user_propagates_http_errors():
 
     with pytest.raises(requests.HTTPError, match="404"):
         client.get_user(404)
+
+
+def test_post_lifecycle_uses_expected_http_methods_and_payloads():
+    session = FakeSession(FakeResponse({"id": 11, "title": "new"}))
+    client = APIClient("https://api.example.test", session=session)
+
+    assert client.create_post("new", "body", 1)["id"] == 11
+    assert session.calls[0] == (
+        "POST", "https://api.example.test/posts", 10,
+        {"json": {"title": "new", "body": "body", "userId": 1}},
+    )
