@@ -2,6 +2,8 @@
 
 A compact API testing framework that demonstrates a client abstraction, deterministic unit tests, and a CI-ready layout.
 
+See the [architecture and sample report](docs/architecture.md).
+
 ## Structure
 
 ```
